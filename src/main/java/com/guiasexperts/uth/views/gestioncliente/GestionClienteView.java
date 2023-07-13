@@ -1,6 +1,9 @@
 package com.guiasexperts.uth.views.gestioncliente;
 
+import com.guiasexperts.uth.data.cotroller.CustomerInteractor;
+import com.guiasexperts.uth.data.cotroller.CustomerInteractorImpl;
 import com.guiasexperts.uth.data.entity.Clientes;
+import com.guiasexperts.uth.data.entity.Paquetes;
 import com.guiasexperts.uth.data.service.ClientesService;
 import com.guiasexperts.uth.views.MainLayout;
 import com.vaadin.flow.component.UI;
@@ -23,16 +26,21 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+
+
 import jakarta.annotation.security.RolesAllowed;
+import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.PageRequest;
+
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Gestion Cliente")
 @Route(value = "gestion-cliente/:clientesID?/:action?(edit)", layout = MainLayout.class)
+
 @RolesAllowed("ADMIN")
-public class GestionClienteView extends Div implements BeforeEnterObserver {
+public class GestionClienteView extends Div implements BeforeEnterObserver, customerViewModel {
 
     private final String CLIENTES_ID = "clientesID";
     private final String CLIENTES_EDIT_ROUTE_TEMPLATE = "gestion-cliente/%s/edit";
@@ -43,18 +51,23 @@ public class GestionClienteView extends Div implements BeforeEnterObserver {
     private TextField edad;
     private TextField telefono;
     private TextField direccion;
+    private List<Clientes> Cliente;
 
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
+    private final Button cancel = new Button("Cancelar");
+    private final Button save = new Button("Guardar");
 
     private final BeanValidationBinder<Clientes> binder;
 
     private Clientes clientes;
+    
+ 
+    private  ClientesService clientesService;
+    private CustomerInteractor controlador;
 
-    private final ClientesService clientesService;
-
-    public GestionClienteView(ClientesService clientesService) {
-        this.clientesService = clientesService;
+    public  GestionClienteView(ClientesService clientesService) {
+    	
+    	 Cliente = new ArrayList<>();
+    	 this.controlador = new CustomerInteractorImpl(this);
         addClassNames("gestion-cliente-view");
 
         // Create UI
@@ -64,15 +77,15 @@ public class GestionClienteView extends Div implements BeforeEnterObserver {
         createEditorLayout(splitLayout);
 
         add(splitLayout);
-
+        
         // Configure Grid
         grid.addColumn("nombre").setAutoWidth(true);
         grid.addColumn("edad").setAutoWidth(true);
         grid.addColumn("telefono").setAutoWidth(true);
         grid.addColumn("direccion").setAutoWidth(true);
-        grid.setItems(query -> clientesService.list(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
-                .stream());
+       // grid.setItems(query -> clientesService.list(
+            //    PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
+             //   .stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
@@ -84,7 +97,8 @@ public class GestionClienteView extends Div implements BeforeEnterObserver {
                 UI.getCurrent().navigate(GestionClienteView.class);
             }
         });
-
+        //AQUI MANDO A TRAER LOS EMPLEADOS DE EL REPOSITORIO
+        this.controlador.consultarClientes();
         // Configure Form
         binder = new BeanValidationBinder<>(Clientes.class);
 
@@ -189,4 +203,17 @@ public class GestionClienteView extends Div implements BeforeEnterObserver {
         binder.readBean(this.clientes);
 
     }
-}
+
+    @Override
+	public void refrescarGridClientes(List<Clientes> empleados) {
+		Collection<Clientes> items = empleados;
+		grid.setItems(items);
+		this.clientes = clientes;
+		
+	}
+
+
+		
+	}
+
+

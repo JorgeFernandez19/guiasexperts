@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 public class Clientes extends AbstractEntity {
 
     private String nombre;
-    private Integer edad;
+    private String  edad;
     private String telefono;
     private String direccion;
 
@@ -16,16 +16,16 @@ public class Clientes extends AbstractEntity {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public Integer getEdad() {
+    public String  getEdad() {
         return edad;
     }
-    public void setEdad(Integer edad) {
+    public void setEdad(String  edad) {
         this.edad = edad;
     }
     public String getTelefono() {
         return telefono;
     }
-    public void setTelefono(String telefono) {
+    public void setTelefono(String  telefono) {
         this.telefono = telefono;
     }
     public String getDireccion() {

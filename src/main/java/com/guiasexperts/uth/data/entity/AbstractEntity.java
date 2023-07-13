@@ -38,7 +38,6 @@ public abstract class AbstractEntity {
         }
         return super.hashCode();
     }
-
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof AbstractEntity that)) {
@@ -48,5 +47,4 @@ public abstract class AbstractEntity {
             return getId().equals(that.getId());
         }
         return super.equals(that);
-    }
-}
+    } }

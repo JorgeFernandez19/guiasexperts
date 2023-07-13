@@ -23,14 +23,14 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 public class GestionReservaView extends Div {
 
-    private TextField street = new TextField("Street address");
-    private TextField postalCode = new TextField("Postal code");
-    private TextField city = new TextField("City");
-    private ComboBox<String> state = new ComboBox<>("State");
-    private ComboBox<String> country = new ComboBox<>("Country");
+    private TextField street = new TextField("Direccion");
+    private TextField postalCode = new TextField("Codigo Postal");
+    private TextField city = new TextField("Ciudad");
+    private  TextField state = new  TextField("Estado");
+    private  TextField country = new  TextField("Pais");
 
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
+    private Button cancel = new Button("Cancelar");
+    private Button save = new Button("Guardar");
 
     private Binder<SampleAddress> binder = new Binder<>(SampleAddress.class);
 
@@ -54,15 +54,13 @@ public class GestionReservaView extends Div {
     }
 
     private Component createTitle() {
-        return new H3("Address");
+        return new H3("Reservacion");
     }
 
     private Component createFormLayout() {
         FormLayout formLayout = new FormLayout();
         formLayout.add(street, 2);
         postalCode.setAllowedCharPattern("\\d");
-        country.setItems("Country 1", "Country 2", "Country 3");
-        state.setItems("State A", "State B", "State C", "State D");
         formLayout.add(postalCode, city, state, country);
         return formLayout;
     }

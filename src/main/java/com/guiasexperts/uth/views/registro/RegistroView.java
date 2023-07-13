@@ -1,5 +1,6 @@
 package com.guiasexperts.uth.views.registro;
 
+
 import com.guiasexperts.uth.data.entity.SamplePerson;
 import com.guiasexperts.uth.data.service.SamplePersonService;
 import com.guiasexperts.uth.views.MainLayout;
@@ -29,17 +30,18 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @RouteAlias(value = "", layout = MainLayout.class)
 @AnonymousAllowed
 @Uses(Icon.class)
+
 public class RegistroView extends Div {
 
-    private TextField firstName = new TextField("First name");
-    private TextField lastName = new TextField("Last name");
-    private EmailField email = new EmailField("Email address");
-    private DatePicker dateOfBirth = new DatePicker("Birthday");
-    private PhoneNumberField phone = new PhoneNumberField("Phone number");
-    private TextField occupation = new TextField("Occupation");
+    private TextField firstName = new TextField("Nombre");
+    private TextField lastName = new TextField("Apellido");
+    private EmailField email = new EmailField("Correo Electronico");
+    private DatePicker dateOfBirth = new DatePicker("Fecha Nacimiento");
+    private PhoneNumberField phone = new PhoneNumberField("Telefono");
+    private TextField occupation = new TextField("Ocupacion");
 
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
+    private Button cancel = new Button("Cancelar");
+    private Button save = new Button("Guardar");
 
     private Binder<SamplePerson> binder = new Binder<>(SamplePerson.class);
 
@@ -66,7 +68,7 @@ public class RegistroView extends Div {
     }
 
     private Component createTitle() {
-        return new H3("Personal information");
+        return new H3("Informacion Personal");
     }
 
     private Component createFormLayout() {
@@ -92,9 +94,9 @@ public class RegistroView extends Div {
         public PhoneNumberField(String label) {
             setLabel(label);
             countryCode.setWidth("120px");
-            countryCode.setPlaceholder("Country");
+            countryCode.setPlaceholder("Pais");
             countryCode.setAllowedCharPattern("[\\+\\d]");
-            countryCode.setItems("+354", "+91", "+62", "+98", "+964", "+353", "+44", "+972", "+39", "+225");
+            countryCode.setItems("+354", "+91", "+62", "+98", "+964", "+353", "+44", "+972", "+39", "+225", "+504");
             countryCode.addCustomValueSetListener(e -> countryCode.setValue(e.getDetail()));
             number.setAllowedCharPattern("\\d");
             HorizontalLayout layout = new HorizontalLayout(countryCode, number);

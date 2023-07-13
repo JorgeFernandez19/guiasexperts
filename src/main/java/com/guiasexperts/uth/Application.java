@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean;
  * and some desktop browsers.
  *
  */
+
 @SpringBootApplication
 @NpmPackage(value = "@fontsource/crimson-text", version = "4.5.0")
 @Theme(value = "guiasexperts", variant = Lumo.DARK)

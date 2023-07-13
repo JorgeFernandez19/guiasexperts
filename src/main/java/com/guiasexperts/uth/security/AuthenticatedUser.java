@@ -27,6 +27,9 @@ public class AuthenticatedUser {
 
     public void logout() {
         authenticationContext.logout();
+        
+        
+    }
     }
 
-}
+

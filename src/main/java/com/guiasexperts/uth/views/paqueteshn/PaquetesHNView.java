@@ -1,5 +1,7 @@
 package com.guiasexperts.uth.views.paqueteshn;
 
+import com.guiasexperts.uth.data.cotroller.CustomerInteractor;
+import com.guiasexperts.uth.data.cotroller.CustomerInteractorImpl;
 import com.guiasexperts.uth.data.entity.Paquetes;
 import com.guiasexperts.uth.data.service.PaquetesService;
 import com.guiasexperts.uth.views.MainLayout;
@@ -19,23 +21,27 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.ValidationException;
+
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
+
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+
 import jakarta.annotation.security.RolesAllowed;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.PageRequest;
+
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Paquetes HN")
 @Route(value = "paquetes-HN/:paquetesID?/:action?(edit)", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
-public class PaquetesHNView extends Div implements BeforeEnterObserver {
+public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesViewModel {
 
     private final String PAQUETES_ID = "paquetesID";
     private final String PAQUETES_EDIT_ROUTE_TEMPLATE = "paquetes-HN/%s/edit";
@@ -46,18 +52,21 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver {
     private DatePicker duracion;
     private DateTimePicker alojamiento;
     private TextField precio;
+    private List<Paquetes> Paquete;
 
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
+    private final Button cancel = new Button("Cancelar");
+    private final Button save = new Button("Guardar");
 
     private final BeanValidationBinder<Paquetes> binder;
 
-    private Paquetes paquetes;
-
-    private final PaquetesService paquetesService;
+    private List<Paquetes> paquetes;
+    private CustomerInteractor controlador;
+    private PaquetesService paquetesService;
 
     public PaquetesHNView(PaquetesService paquetesService) {
-        this.paquetesService = paquetesService;
+    	 Paquete = new ArrayList<>();
+    	 this.controlador = new CustomerInteractorImpl(this);
+    
         addClassNames("paquetes-hn-view");
 
         // Create UI
@@ -73,9 +82,9 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver {
         grid.addColumn("duracion").setAutoWidth(true);
         grid.addColumn("alojamiento").setAutoWidth(true);
         grid.addColumn("precio").setAutoWidth(true);
-        grid.setItems(query -> paquetesService.list(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
-                .stream());
+     //   grid.setItems(query -> paquetesService.list(
+          //      PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
+            //    .stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
@@ -87,6 +96,11 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver {
                 UI.getCurrent().navigate(PaquetesHNView.class);
             }
         });
+        
+        //AQUI MANDO A TRAER LOS EMPLEADOS DE EL REPOSITORIO
+        this.controlador.consultarPaquetes();
+        
+      
 
         // Configure Form
         binder = new BeanValidationBinder<>(Paquetes.class);
@@ -104,10 +118,10 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver {
         save.addClickListener(e -> {
             try {
                 if (this.paquetes == null) {
-                    this.paquetes = new Paquetes();
+                    this.paquetes = (List<Paquetes>) new Paquetes();
                 }
-                binder.writeBean(this.paquetes);
-                paquetesService.update(this.paquetes);
+                //binder.writeBean(this.paquetes);
+               // paquetesService.update(this.paquetes);
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -117,8 +131,6 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver {
                         "Error updating the data. Somebody else has updated the record while you were making changes.");
                 n.setPosition(Position.MIDDLE);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            } catch (ValidationException validationException) {
-                Notification.show("Failed to update the data. Check again that all values are valid");
             }
         });
     }
@@ -189,8 +201,32 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver {
     }
 
     private void populateForm(Paquetes value) {
-        this.paquetes = value;
-        binder.readBean(this.paquetes);
+        this.paquetes = (List<Paquetes>) value;
+        binder.readBean((Paquetes) this.paquetes);
 
     }
+
+	
+		
+	
+
+	@Override
+	public void refrescarGridPaquetes(List<Paquetes> empleados) {
+		Collection<Paquetes> items = empleados;
+		grid.setItems(items);
+		this.paquetes = paquetes;
+		
+	}
+
+
+
+
+
 }
+		
+	
+
+
+	
+
+    

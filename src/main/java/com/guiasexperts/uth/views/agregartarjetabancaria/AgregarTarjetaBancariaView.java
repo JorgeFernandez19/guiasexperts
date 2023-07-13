@@ -53,28 +53,28 @@ public class AgregarTarjetaBancariaView extends Div {
     }
 
     private Component createTitle() {
-        return new H3("Credit Card");
+        return new H3("Tarjeta Credito/Debito");
     }
 
     private Component createFormLayout() {
-        cardNumber = new TextField("Credit card number");
+        cardNumber = new TextField("Numero de la Tarjeta");
         cardNumber.setPlaceholder("1234 5678 9123 4567");
         cardNumber.setPattern(CARD_REGEX);
         cardNumber.setAllowedCharPattern("[\\d ]");
         cardNumber.setRequired(true);
         cardNumber.setErrorMessage("Please enter a valid credit card number");
 
-        cardholderName = new TextField("Cardholder name");
+        cardholderName = new TextField("Nombre del Titular");
 
         month = new Select<>();
-        month.setPlaceholder("Month");
+        month.setPlaceholder("Mes");
         month.setItems(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 
         year = new Select<>();
-        year.setPlaceholder("Year");
-        year.setItems(20, 21, 22, 23, 24, 25);
+        year.setPlaceholder("Año");
+        year.setItems(23, 24, 25, 26, 27, 28);
 
-        expiration = new ExpirationDateField("Expiration date", month, year);
+        expiration = new ExpirationDateField("Fecha Expiracion", month, year);
         csc = new PasswordField("CSC");
 
         FormLayout formLayout = new FormLayout();
@@ -86,10 +86,10 @@ public class AgregarTarjetaBancariaView extends Div {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.addClassName("button-layout");
 
-        submit = new Button("Submit");
+        submit = new Button("Guardar");
         submit.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        cancel = new Button("Cancel");
+        cancel = new Button("Cancelar");
 
         buttonLayout.add(submit);
         buttonLayout.add(cancel);
