@@ -25,7 +25,7 @@ public interface guiasexpertsRepository {
 	    "User-Agent: Retrofit-Sample-App"
 	})
 	
-	@GET("/pls/apex/jorgefernandez_pv2_2023/guiasexperts//paquetes/")
+	@GET("/pls/apex/jorgefernandez_pv2_2023/guiasexperts/paquetes/")
 	Call<ResponseCustomer> obtenerPaquetes();
 
 

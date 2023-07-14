@@ -1,7 +1,7 @@
 package com.guiasexperts.uth.views.paqueteshn;
 
 import com.guiasexperts.uth.data.cotroller.CustomerInteractor;
-import com.guiasexperts.uth.data.cotroller.CustomerInteractorImpl;
+import com.guiasexperts.uth.data.cotroller.PaquetesInteractorImpl;
 import com.guiasexperts.uth.data.entity.Paquetes;
 import com.guiasexperts.uth.data.service.PaquetesService;
 import com.guiasexperts.uth.views.MainLayout;
@@ -20,9 +20,6 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
-
-import com.vaadin.flow.data.converter.StringToIntegerConverter;
 
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -52,21 +49,20 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
     private DatePicker duracion;
     private DateTimePicker alojamiento;
     private TextField precio;
-    private List<Paquetes> Paquete;
-
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
 
-    private final BeanValidationBinder<Paquetes> binder;
+  //  private final BeanValidationBinder<Paquetes> binder;
 
-    private List<Paquetes> paquetes;
+    private Paquetes paquete;
     private CustomerInteractor controlador;
     private PaquetesService paquetesService;
 
     public PaquetesHNView(PaquetesService paquetesService) {
-    	 Paquete = new ArrayList<>();
-    	 this.controlador = new CustomerInteractorImpl(this);
-    
+    	new ArrayList<>();
+    	 this.controlador = new PaquetesInteractorImpl(this);
+    	 
+    	 
         addClassNames("paquetes-hn-view");
 
         // Create UI
@@ -103,12 +99,12 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
       
 
         // Configure Form
-        binder = new BeanValidationBinder<>(Paquetes.class);
+     //   binder = new BeanValidationBinder<>(Paquetes.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
-        binder.forField(precio).withConverter(new StringToIntegerConverter("Only numbers are allowed")).bind("precio");
+      //  binder.forField(precio).withConverter(new StringToIntegerConverter("Only numbers are allowed")).bind("precio");
 
-        binder.bindInstanceFields(this);
+       // binder.bindInstanceFields(this);
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -117,8 +113,8 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
 
         save.addClickListener(e -> {
             try {
-                if (this.paquetes == null) {
-                    this.paquetes = (List<Paquetes>) new Paquetes();
+                if (this.paquete == null) {
+                    this.paquete = new Paquetes();
                 }
                 //binder.writeBean(this.paquetes);
                // paquetesService.update(this.paquetes);
@@ -139,7 +135,7 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> paquetesId = event.getRouteParameters().get(PAQUETES_ID).map(Long::parseLong);
         if (paquetesId.isPresent()) {
-            Optional<Paquetes> paquetesFromBackend = paquetesService.get(paquetesId.get());
+          /*  Optional<Paquetes> paquetesFromBackend = paquetesService.get(paquetesId.get());
             if (paquetesFromBackend.isPresent()) {
                 populateForm(paquetesFromBackend.get());
             } else {
@@ -149,7 +145,7 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
                 // refresh grid
                 refreshGrid();
                 event.forwardTo(PaquetesHNView.class);
-            }
+            }*/
         }
     }
 
@@ -201,9 +197,9 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
     }
 
     private void populateForm(Paquetes value) {
-        this.paquetes = (List<Paquetes>) value;
-        binder.readBean((Paquetes) this.paquetes);
-
+    
+       // binder.readBean((Paquetes) this.paquetes);
+        this.paquete = value;
     }
 
 	
@@ -211,10 +207,10 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
 	
 
 	@Override
-	public void refrescarGridPaquetes(List<Paquetes> empleados) {
-		Collection<Paquetes> items = empleados;
+	public void refrescarGridPaquetes(List<Paquetes> Paquetes) {
+		Collection<Paquetes> items = Paquetes;
 		grid.setItems(items);
-		this.paquetes = paquetes;
+		this.paquete = paquete;
 		
 	}
 

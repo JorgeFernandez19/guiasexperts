@@ -1,6 +1,6 @@
 package com.guiasexperts.uth.data.cotroller;
 
-public interface CustomerInteractor {
+public interface PaquetesInteractor {
 	
 	void consultarClientes();
 

@@ -205,8 +205,8 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
     }
 
     @Override
-	public void refrescarGridClientes(List<Clientes> empleados) {
-		Collection<Clientes> items = empleados;
+	public void refrescarGridClientes(List<Clientes> Clientes) {
+		Collection<Clientes> items = Clientes;
 		grid.setItems(items);
 		this.clientes = clientes;
 		

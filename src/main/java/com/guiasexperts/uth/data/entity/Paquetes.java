@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public class Paquetes extends AbstractEntity {
 
     private String destino;
-    private LocalDate duracion;
-    private LocalDateTime alojamiento;
+    private String duracion;
+    private String alojamiento;
     private Integer precio;
 
     public String getDestino() {
@@ -18,16 +18,16 @@ public class Paquetes extends AbstractEntity {
     public void setDestino(String destino) {
         this.destino = destino;
     }
-    public LocalDate getDuracion() {
+    public String getDuracion() {
         return duracion;
     }
-    public void setDuracion(LocalDate duracion) {
+    public void setDuracion(String duracion) {
         this.duracion = duracion;
     }
-    public LocalDateTime getAlojamiento() {
+    public String getAlojamiento() {
         return alojamiento;
     }
-    public void setAlojamiento(LocalDateTime alojamiento) {
+    public void setAlojamiento(String alojamiento) {
         this.alojamiento = alojamiento;
     }
     public Integer getPrecio() {

@@ -4,15 +4,15 @@ import java.io.IOException;
 
 import com.guiasexperts.uth.data.entity.ResponseCustomer;
 import com.guiasexperts.uth.data.service.guiasexpertsRepositoryImpl;
-import com.guiasexperts.uth.views.gestioncliente.customerViewModel;
+import com.guiasexperts.uth.views.paqueteshn.paquetesViewModel;
 
 
-public class CustomerInteractorImpl implements CustomerInteractor {
+	public class PaquetesInteractorImpl implements CustomerInteractor {
+		
 	private guiasexpertsRepositoryImpl modelo;
-	private customerViewModel vista;
-
+    private paquetesViewModel vista;
 	
-	public CustomerInteractorImpl (customerViewModel vista) {
+	public PaquetesInteractorImpl (paquetesViewModel vista) {
 		super ();
 		this.modelo = guiasexpertsRepositoryImpl.getInstance("https://apex.oracle.com", 600000L);
 	this.vista = vista;
@@ -22,12 +22,13 @@ public class CustomerInteractorImpl implements CustomerInteractor {
 	
 	
 	
+
 	@Override
-	public void consultarClientes() {
+	public void consultarPaquetes() {
 		try {
 			ResponseCustomer respuesta = this.modelo.getCustomer();
-			this.vista.refrescarGridClientes(respuesta.getItems());
-				
+			//this.vista.refrescarGridPaquetes(respuesta.getCount());
+			
 			
 
 		}catch (IOException e) {
@@ -47,14 +48,14 @@ public class CustomerInteractorImpl implements CustomerInteractor {
 
 
 
+
 	@Override
-	public void consultarPaquetes() {
+	public void consultarClientes() {
 		// TODO Auto-generated method stub
 		
 	}
 
 
-		
 	}
 
 
