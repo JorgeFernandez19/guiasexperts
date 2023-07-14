@@ -4,7 +4,7 @@ public interface CustomerInteractor {
 	
 	void consultarClientes();
 
-	void consultarPaquetes();
+
 
 	
 	

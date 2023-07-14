@@ -3,6 +3,7 @@ package com.guiasexperts.uth.data.service;
 import java.io.IOException;
 
 import com.guiasexperts.uth.data.entity.ResponseCustomer;
+import com.guiasexperts.uth.data.entity.ResponsePaquetes;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -51,10 +52,10 @@ public ResponseCustomer getCustomer () throws IOException {
 	
 
 }
-public ResponseCustomer getPaquetes () throws IOException {
+public ResponsePaquetes getPaquetes () throws IOException {
 	
-	Call<ResponseCustomer> call = client.getDatabaseService().obtenerPaquetes();
-	Response<ResponseCustomer> response = call.execute(); //aqui donde se consulta a la URL DE LA BASE DE DATOS
+	Call<ResponsePaquetes> call = client.getDatabaseService().obtenerPaquetes();
+	Response<ResponsePaquetes> response =  call.execute();                           //aqui donde se consulta a la URL DE LA BASE DE DATOS
 	
 	if(response.isSuccessful()) {
 		return response.body();

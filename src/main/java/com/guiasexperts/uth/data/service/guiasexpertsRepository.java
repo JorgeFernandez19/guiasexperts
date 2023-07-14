@@ -2,6 +2,7 @@ package com.guiasexperts.uth.data.service;
 
 
 import com.guiasexperts.uth.data.entity.ResponseCustomer;
+import com.guiasexperts.uth.data.entity.ResponsePaquetes;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -26,7 +27,7 @@ public interface guiasexpertsRepository {
 	})
 	
 	@GET("/pls/apex/jorgefernandez_pv2_2023/guiasexperts/paquetes/")
-	Call<ResponseCustomer> obtenerPaquetes();
+	Call<ResponsePaquetes> obtenerPaquetes();
 
 
 }

@@ -1,6 +1,7 @@
 package com.guiasexperts.uth.views.paqueteshn;
 
 import com.guiasexperts.uth.data.cotroller.CustomerInteractor;
+import com.guiasexperts.uth.data.cotroller.PaquetesInteractor;
 import com.guiasexperts.uth.data.cotroller.PaquetesInteractorImpl;
 import com.guiasexperts.uth.data.entity.Paquetes;
 import com.guiasexperts.uth.data.service.PaquetesService;
@@ -55,12 +56,12 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
   //  private final BeanValidationBinder<Paquetes> binder;
 
     private Paquetes paquete;
-    private CustomerInteractor controlador;
+    private PaquetesInteractor controlador;
     private PaquetesService paquetesService;
 
     public PaquetesHNView(PaquetesService paquetesService) {
     	new ArrayList<>();
-    	 this.controlador = new PaquetesInteractorImpl(this);
+    	 this.controlador = new PaquetesInteractorImpl (this);
     	 
     	 
         addClassNames("paquetes-hn-view");

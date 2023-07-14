@@ -47,15 +47,12 @@ public class CustomerInteractorImpl implements CustomerInteractor {
 
 
 
-	@Override
-	public void consultarPaquetes() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 
 		
-	}
+	
 
 
 	
