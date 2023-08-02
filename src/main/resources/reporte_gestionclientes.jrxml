@@ -19,9 +19,9 @@
 				<staticText>
 					<reportElement x="9" y="9" width="420" height="50" forecolor="#FFFFFF" uuid="f2bf330f-a6d0-4fff-9690-5a71b7ea7845"/>
 					<textElement>
-						<font size="34" isBold="true"/>
+						<font size="22" isBold="true"/>
 					</textElement>
-					<text><![CDATA[REPORTE DE PAQUETES]]></text>
+					<text><![CDATA[REPORTE DE GESTION DE CLIENTES]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="395" y="43" width="180" height="20" forecolor="#FFFFFF" uuid="6607a952-80f4-4b74-be4c-d023da7d71d2"/>
@@ -36,9 +36,9 @@
 						<pen lineColor="#FFFFFF"/>
 					</box>
 					<textElement textAlignment="Left" markup="styled">
-						<font fontName="Adobe Devanagari" size="21" isBold="true"/>
+						<font fontName="Adobe Devanagari" size="18" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Información de paquetes]]></text>
+					<text><![CDATA[Información de clientes]]></text>
 				</staticText>
 			</frame>
 		</band>

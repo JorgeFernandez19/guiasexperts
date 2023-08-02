@@ -156,10 +156,25 @@
 <version>6.17.0</version>
 </dependency>
 
-        
-        
-        
-        
+
+
+
+
+        <dependency>
+        	<groupId>hn.uthjf</groupId>
+        	<artifactId>aplicacion-simple-maven-consola</artifactId>
+        	<version>1.0.0</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.hn.climaapi</groupId>
+        	<artifactId>consultacliemaapp</artifactId>
+        	<version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.rrhh.uth</groupId>
+        	<artifactId>rrhh-empleados</artifactId>
+        	<version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

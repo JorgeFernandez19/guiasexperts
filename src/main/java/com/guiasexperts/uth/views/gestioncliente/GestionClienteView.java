@@ -5,8 +5,10 @@ import com.guiasexperts.uth.data.cotroller.CustomerInteractorImpl;
 import com.guiasexperts.uth.data.entity.Clientes;
 import com.guiasexperts.uth.data.entity.Paquetes;
 import com.guiasexperts.uth.data.service.ClientesService;
+import com.guiasexperts.uth.data.service.ReportGenerator;
 import com.guiasexperts.uth.views.MainLayout;
 import com.guiasexperts.uth.views.paqueteshn.PaquetesHNView;
+
 
 
 import com.vaadin.flow.component.UI;
@@ -23,8 +25,7 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
-//import com.vaadin.flow.data.binder.BeanValidationBinder;
-//import com.vaadin.flow.data.binder.ValidationException;
+
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -33,10 +34,15 @@ import com.vaadin.flow.router.Route;
 
 
 import jakarta.annotation.security.RolesAllowed;
+import net.sf.jasperreports.engine.JRDataSource;
+
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.HashMap;
+
 
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
@@ -107,6 +113,8 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
         menu.addItem("Generar Reporte", event -> {
    Notification.show("Generando reporte PDF...");
    generarreporteclientes();
+        });
+   
         //AQUI MANDO A TRAER LOS EMPLEADOS DE EL REPOSITORIO
         this.controlador.consultarClientes();
 
@@ -130,28 +138,38 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
-                UI.getCurrent().navigate(PaquetesHNView.class);
+                UI.getCurrent().navigate(GestionClienteView.class);
             } catch (ObjectOptimisticLockingFailureException exception) {
-                Notification n = Notification.show(
-                        "Error updating the data. Somebody else has updated the record while you were making changes.");
+                Notification n = Notification.show(  "Error updating the data. Somebody else has updated the record while you were making changes.");
                 n.setPosition(Position.MIDDLE);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
+              });
         
-            
-        });
-        
-        }
-        
-        
-        
-    
-    	private void generarreporteclientes() {
+      }
+    private void generarreporteclientes() {
+    	
+    	ReportGenerator generador = new ReportGenerator();
+    	
+    	
+    	
+    	Map<String, Object> parametros= new HashMap<>();
+		ClientesReport datasource = new ClientesReport;
+		datasource.setCliente(Cliente);
+		boolean generado = generador.generarReportePDF("reporte_gestionclientes", parametros, datasource)
+    	if (generado) {
+    		String ubicacion = generador.getUbicacion();
+    		Anchor url = new Anchor ();
+    		
+    		
+    		
+    		
+    	}
     	
     		
     	}
 	
-    	
+		
 	
 
 
@@ -162,7 +180,7 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> clientesId = event.getRouteParameters().get(CLIENTES_ID).map(Long::parseLong);
         if (clientesId.isPresent()) {
-        /*    Optional<Clientes> clientesFromBackend = clientesService.get(clientesId.get());
+          /*  Optional<Clientes> clientesFromBackend = clientesService.get(clientesId.get());
             if (clientesFromBackend.isPresent()) {
                 populateForm(clientesFromBackend.get());
             } else {
@@ -225,7 +243,7 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
     private void populateForm(Clientes value) {
         this.clientes = value;
       //  binder.readBean(this.clientes);
-       
+
     }
 
     @Override

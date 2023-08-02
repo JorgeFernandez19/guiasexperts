@@ -136,7 +136,7 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
                 Notification n = Notification.show(
                         "Error updating the data. Somebody else has updated the record while you were making changes.");
                 n.setPosition(Position.MIDDLE);
-                n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                
             }
         });
     }
