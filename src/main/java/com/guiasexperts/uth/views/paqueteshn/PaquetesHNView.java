@@ -14,6 +14,7 @@ import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
@@ -79,6 +80,14 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
         grid.addColumn("duracion").setAutoWidth(true);
         grid.addColumn("alojamiento").setAutoWidth(true);
         grid.addColumn("precio").setAutoWidth(true);
+        
+        GridContextMenu<Paquetes> menu = grid.addContextMenu();
+        menu.addItem("Generar Reporte", event -> {
+   Notification.show("Generando reporte PDF...");
+   generarreportepaquetes();
+        	
+        
+        });
      //   grid.setItems(query -> paquetesService.list(
           //      PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
             //    .stream());
@@ -132,7 +141,16 @@ public class PaquetesHNView extends Div implements BeforeEnterObserver,paquetesV
         });
     }
 
-    @Override
+
+
+	private void generarreportepaquetes() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> paquetesId = event.getRouteParameters().get(PAQUETES_ID).map(Long::parseLong);
         if (paquetesId.isPresent()) {

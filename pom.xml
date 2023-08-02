@@ -40,10 +40,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            
+
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+		
         <dependency>
             <groupId>com.vaadin</groupId>
             <!-- Replace artifactId with vaadin-core to use only free components -->
@@ -147,7 +150,12 @@
         </dependency>
         
   
-        
+        <dependency>
+<groupId>net.sf.jasperreports</groupId>
+<artifactId>jasperreports</artifactId>
+<version>6.17.0</version>
+</dependency>
+
         
         
         
