@@ -1,18 +1,25 @@
 package com.guiasexperts.uth.views.gestioncliente;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+
 import com.guiasexperts.uth.data.cotroller.CustomerInteractor;
 import com.guiasexperts.uth.data.cotroller.CustomerInteractorImpl;
 import com.guiasexperts.uth.data.entity.Clientes;
-import com.guiasexperts.uth.data.entity.Paquetes;
+import com.guiasexperts.uth.data.entity.ClientesReport;
 import com.guiasexperts.uth.data.service.ClientesService;
 import com.guiasexperts.uth.data.service.ReportGenerator;
 import com.guiasexperts.uth.views.MainLayout;
-import com.guiasexperts.uth.views.paqueteshn.PaquetesHNView;
-
-
-
 import com.vaadin.flow.component.UI;
+
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -25,26 +32,12 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
-
-import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-
 import jakarta.annotation.security.RolesAllowed;
-import net.sf.jasperreports.engine.JRDataSource;
-
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.HashMap;
-
-
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Gestion Cliente")
 @Route(value = "gestion-cliente/:clientesID?/:action?(edit)", layout = MainLayout.class)
@@ -61,7 +54,7 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
     private TextField edad;
     private TextField telefono;
     private TextField direccion;
-    private List<Clientes> Cliente;
+    private List<Clientes> datos;
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
@@ -76,7 +69,7 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
 
     public  GestionClienteView(ClientesService clientesService) {
     	
-    	 Cliente = new ArrayList<>();
+    	 datos = new ArrayList<>();
     	 this.controlador = new CustomerInteractorImpl(this);
         addClassNames("gestion-cliente-view");
 
@@ -112,7 +105,7 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
         GridContextMenu<Clientes> menu = grid.addContextMenu();
         menu.addItem("Generar Reporte", event -> {
    Notification.show("Generando reporte PDF...");
-   generarreporteclientes();
+   generarReporteclientes();
         });
    
         //AQUI MANDO A TRAER LOS EMPLEADOS DE EL REPOSITORIO
@@ -147,21 +140,32 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
               });
         
       }
-    private void generarreporteclientes() {
+    private void generarReporteclientes() {
     	
     	ReportGenerator generador = new ReportGenerator();
     	
     	
     	
     	Map<String, Object> parametros= new HashMap<>();
-		ClientesReport datasource = new ClientesReport;
-		datasource.setCliente(Cliente);
-		boolean generado = generador.generarReportePDF("reporte_gestionclientes", parametros, datasource)
+    	ClientesReport datasource = new ClientesReport();
+		datasource.setdata(datos);
+		boolean generado = generador.generarReportePDF("reporte_gestionclientes", parametros, datasource);
     	if (generado) {
     		String ubicacion = generador.getUbicacion();
-    		Anchor url = new Anchor ();
+    		Anchor url = new Anchor ("Abrir reporte PDF");
+    		url.setTarget("_black");
+    		
+    		Notification notificacion = new Notification (url);
+    		
+    		notificacion.setDuration(20000);
+    		notificacion.open();
+    	}else {
     		
     		
+    		Notification notificacion = new Notification ("Ocurrio un problemas al generar el reporte ");
+    		notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+    		notificacion.setDuration(20000);
+    		notificacion.open();
     		
     		
     	}
