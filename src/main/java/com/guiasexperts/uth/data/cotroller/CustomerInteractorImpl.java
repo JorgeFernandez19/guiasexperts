@@ -2,9 +2,11 @@ package com.guiasexperts.uth.data.cotroller;
 
 import java.io.IOException;
 
+import com.guiasexperts.uth.data.entity.Clientes;
 import com.guiasexperts.uth.data.entity.ResponseCustomer;
 import com.guiasexperts.uth.data.service.guiasexpertsRepositoryImpl;
 import com.guiasexperts.uth.views.gestioncliente.customerViewModel;
+
 
 
 public class CustomerInteractorImpl implements CustomerInteractor {
@@ -33,22 +35,31 @@ public class CustomerInteractorImpl implements CustomerInteractor {
 		}catch (IOException e) {
 		e.printStackTrace();
 		
-		
-			
-		
-		
-	
-	
-
-	}
-
 		}
-
-
-
-
-
 	}
+
+
+
+
+	@Override
+	public void createCustomer(Clientes nuevo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	
+		
+	}
+
+
+
+
+
+
+
 
 
 		

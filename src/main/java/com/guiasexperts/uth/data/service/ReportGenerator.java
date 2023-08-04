@@ -1,7 +1,7 @@
 package com.guiasexperts.uth.data.service;
 
-import java.io.File;
 
+import java.io.File;
 import java.util.Map;
 
 import org.springframework.util.ResourceUtils;
@@ -14,7 +14,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 public class ReportGenerator {
-private String ubicacion;
+
+	private String ubicacion;
 	
 	public boolean generarReportePDF(String reportName, Map<String, Object> parameters, JRDataSource datasource) {
 		boolean generado = false;

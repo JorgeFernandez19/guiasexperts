@@ -10,6 +10,10 @@ public class ResponseCustomer {
 	private int offset;
 	private int count;
 	
+	
+	public ResponseCustomer () {
+		
+	}
 	public List<Clientes> getItems() {
 		
 		return items;

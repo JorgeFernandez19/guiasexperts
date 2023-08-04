@@ -1,5 +1,6 @@
 package com.guiasexperts.uth.views.gestioncliente;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import jakarta.annotation.security.RolesAllowed;
 
@@ -73,19 +75,52 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
     	 this.controlador = new CustomerInteractorImpl(this);
         addClassNames("gestion-cliente-view");
 
-        // Create UI
+        //Create UI
         SplitLayout splitLayout = new SplitLayout();
 
         createGridLayout(splitLayout);
         createEditorLayout(splitLayout);
 
         add(splitLayout);
+       
+     
         
+      
         // Configure Grid
+        
         grid.addColumn("nombre").setAutoWidth(true);
         grid.addColumn("edad").setAutoWidth(true);
         grid.addColumn("telefono").setAutoWidth(true);
         grid.addColumn("direccion").setAutoWidth(true);
+        //AQUI MANDO A TRAER LOS EMPLEADOS DE EL REPOSITORIO
+        this.controlador.consultarClientes();
+        
+        cancel.addClickListener(e -> {
+            clearForm();
+            refreshGrid();
+        });
+
+        save.addClickListener(e -> {
+            try {
+                if (this.clientes == null) {
+                    this.clientes = new Clientes();
+                }
+                
+                
+               // binder.writeBean(this.clientes);
+              //  clientesService.update(this.clientes);
+         
+                clearForm();
+                refreshGrid();
+                Notification.show("Data updated");
+                UI.getCurrent().navigate(GestionClienteView.class);
+            } catch (ObjectOptimisticLockingFailureException exception) {
+                Notification n = Notification.show(  "Error updating the data. Somebody else has updated the record while you were making changes.");
+                n.setPosition(Position.MIDDLE);
+                n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
+              });
+        
        // grid.setItems(query -> clientesService.list(
             //    PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
              //   .stream());
@@ -104,77 +139,65 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
         
         GridContextMenu<Clientes> menu = grid.addContextMenu();
         menu.addItem("Generar Reporte", event -> {
-   Notification.show("Generando reporte PDF...");
-   generarReporteclientes();
+        	if(this.datos.isEmpty()) {
+        		Notification.show("No hay datos para generar el reporte");
+        	}else {
+        		Notification.show("Generando reporte PDF...");
+            	generarReporteclientes();
+        	}
+        
         });
-   
-        //AQUI MANDO A TRAER LOS EMPLEADOS DE EL REPOSITORIO
-        this.controlador.consultarClientes();
+        
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
+        
+        
+     
+        
+    }
+        private void generarReporteclientes() {
+        	
+        	ReportGenerator generador = new ReportGenerator();
+        	
+        	
+        	
+        	Map<String, Object> parametros= new HashMap<>();
+        	ClientesReport datasource = new ClientesReport();
+    		datasource.setdata(datos);
+    		boolean generado = generador.generarReportePDF("reporte_gestionclientes", parametros, datasource);
+        	if (generado) {
+        		String ubicacion = generador.getUbicacion();
+        		Anchor url = new Anchor ("Abrir reporte PDF");
+        		url.setTarget("_black");
+        		
+        		Notification notificacion = new Notification (url);
+        		
+        		notificacion.setDuration(20000);
+        		notificacion.open();
+        	}else {
+        		
+        		
+        		Notification notificacion = new Notification ("Ocurrio un problemas al generar el reporte ");
+        		notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        		notificacion.setDuration(20000);
+        		notificacion.open();
+        		
+        		
+        	
+        	
+        		
+        	
+    	
+        
+        	}
+            
+                }
+        	
+ 
 
+        	
 
     
-
-        cancel.addClickListener(e -> {
-            clearForm();
-            refreshGrid();
-        });
-
-        save.addClickListener(e -> {
-            try {
-                if (this.clientes == null) {
-                    this.clientes = new Clientes();
-                }
-                
-               // binder.writeBean(this.clientes);
-              //  clientesService.update(this.clientes);
-         
-                clearForm();
-                refreshGrid();
-                Notification.show("Data updated");
-                UI.getCurrent().navigate(GestionClienteView.class);
-            } catch (ObjectOptimisticLockingFailureException exception) {
-                Notification n = Notification.show(  "Error updating the data. Somebody else has updated the record while you were making changes.");
-                n.setPosition(Position.MIDDLE);
-                n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            }
-              });
-        
-      }
-    private void generarReporteclientes() {
-    	
-    	ReportGenerator generador = new ReportGenerator();
-    	
-    	
-    	
-    	Map<String, Object> parametros= new HashMap<>();
-    	ClientesReport datasource = new ClientesReport();
-		datasource.setdata(datos);
-		boolean generado = generador.generarReportePDF("reporte_gestionclientes", parametros, datasource);
-    	if (generado) {
-    		String ubicacion = generador.getUbicacion();
-    		Anchor url = new Anchor ("Abrir reporte PDF");
-    		url.setTarget("_black");
-    		
-    		Notification notificacion = new Notification (url);
-    		
-    		notificacion.setDuration(20000);
-    		notificacion.open();
-    	}else {
-    		
-    		
-    		Notification notificacion = new Notification ("Ocurrio un problemas al generar el reporte ");
-    		notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
-    		notificacion.setDuration(20000);
-    		notificacion.open();
-    		
-    		
-    	}
-    	
-    		
-    	}
-	
-		
-	
 
 
 
