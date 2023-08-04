@@ -8,9 +8,11 @@ public interface customerViewModel {
 	
 	
 
-	void refrescarGridClientes(List<Clientes> clientes);
 
-	
+
+
+
+	void refrescarGridClientes(List<Clientes> clientes);
 
 }
 //void refrescarGridEmpleados(List<Clientes>clientes);

@@ -12,10 +12,9 @@ public class ClientesReport implements JRDataSource{
 	private int counter = -1;
 	private int maxCounter = 0;
 	
-	public void setdata(List<Clientes>datos) {
+	public void setData(List<Clientes> datos) {
 		this.datos = datos;
-		this.maxCounter = this.datos.size()  -1;
-		
+		this.maxCounter = this.datos.size() -1;
 		
 	}
 

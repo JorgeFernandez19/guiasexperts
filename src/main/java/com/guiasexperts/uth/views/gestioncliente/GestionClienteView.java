@@ -1,6 +1,6 @@
 package com.guiasexperts.uth.views.gestioncliente;
 
-import java.awt.Component;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -69,10 +69,11 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
     private  ClientesService clientesService;
     private CustomerInteractor controlador;
 
+
     public  GestionClienteView(ClientesService clientesService) {
-    	
-    	 datos = new ArrayList<>();
     	 this.controlador = new CustomerInteractorImpl(this);
+    	 this.datos = new ArrayList<>();
+    	
         addClassNames("gestion-cliente-view");
 
         //Create UI
@@ -84,7 +85,7 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
         add(splitLayout);
        
      
-        
+
       
         // Configure Grid
         
@@ -92,8 +93,33 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
         grid.addColumn("edad").setAutoWidth(true);
         grid.addColumn("telefono").setAutoWidth(true);
         grid.addColumn("direccion").setAutoWidth(true);
+        
+        GridContextMenu<Clientes> menu = grid.addContextMenu();
+        menu.addItem("Generar Reporte", event -> {
+        	if(this.datos.isEmpty()) {
+        		Notification.show("No hay datos para generar el reporte");
+        	}else {
+        		Notification.show("Generando reporte PDF...");
+            	generarReporteclientes();
+        	}
+        	
+        
+        });
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+
+        // when a row is selected or deselected, populate form
+        grid.asSingleSelect().addValueChangeListener(event -> {
+            if (event.getValue() != null) {
+                UI.getCurrent().navigate(String.format(CLIENTES_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
+            } else {
+                clearForm();
+                UI.getCurrent().navigate(GestionClienteView.class);
+            }
+        });
+        
         //AQUI MANDO A TRAER LOS EMPLEADOS DE EL REPOSITORIO
         this.controlador.consultarClientes();
+        
         
         cancel.addClickListener(e -> {
             clearForm();
@@ -118,36 +144,16 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
                 Notification n = Notification.show(  "Error updating the data. Somebody else has updated the record while you were making changes.");
                 n.setPosition(Position.MIDDLE);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+              
             }
               });
         
        // grid.setItems(query -> clientesService.list(
             //    PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
              //   .stream());
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-
-        // when a row is selected or deselected, populate form
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(CLIENTES_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
-            } else {
-                clearForm();
-                UI.getCurrent().navigate(GestionClienteView.class);
-            }
-        });
+   
         
-        
-        GridContextMenu<Clientes> menu = grid.addContextMenu();
-        menu.addItem("Generar Reporte", event -> {
-        	if(this.datos.isEmpty()) {
-        		Notification.show("No hay datos para generar el reporte");
-        	}else {
-        		Notification.show("Generando reporte PDF...");
-            	generarReporteclientes();
-        	}
-        
-        });
-        
+      
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
         
@@ -163,11 +169,11 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
         	
         	Map<String, Object> parametros= new HashMap<>();
         	ClientesReport datasource = new ClientesReport();
-    		datasource.setdata(datos);
+    		datasource.setData(datos);
     		boolean generado = generador.generarReportePDF("reporte_gestionclientes", parametros, datasource);
         	if (generado) {
         		String ubicacion = generador.getUbicacion();
-        		Anchor url = new Anchor ("Abrir reporte PDF");
+        		Anchor url = new Anchor (ubicacion,"Abrir reporte PDF");
         		url.setTarget("_black");
         		
         		Notification notificacion = new Notification (url);
@@ -273,16 +279,28 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
 
     }
 
-    @Override
-	public void refrescarGridClientes(List<Clientes> Clientes) {
-		Collection<Clientes> items = Clientes;
+
+
+
+    
+	
+	
+	
+	@Override
+	public void refrescarGridClientes(List<Clientes> data) {
+		datos.addAll(data);
+		Collection<Clientes> items = datos;
 		grid.setItems(items);
-		this.clientes = clientes;
+		
 		
 	}
 
-
 		
 	}
 
+		
+	
 
+
+		
+	
