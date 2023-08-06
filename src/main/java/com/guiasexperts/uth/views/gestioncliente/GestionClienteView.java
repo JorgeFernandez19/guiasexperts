@@ -128,8 +128,19 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
 
         save.addClickListener(e -> {
             try {
+            	String mensajeExito ="";
                 if (this.clientes == null) {
+                    
+                    
+                    mensajeExito="Cliente creado";
                     this.clientes = new Clientes();
+                    this.clientes.setNombre(nombre.getValue());
+                    this.clientes.setEdad(edad.getValue());
+                    this.clientes.setTelefono(telefono.getValue());
+                    this.clientes.setDireccion(direccion.getValue());
+                    
+                    
+                    this.controlador.crearNuevoClientes(clientes);
                 }
                 
                 
@@ -264,7 +275,9 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
         wrapper.add(grid);
     }
 
-    private void refreshGrid() {
+    private void refreshGrid() 
+    {
+    	this.controlador.consultarClientes();
         grid.select(null);
         grid.getDataProvider().refreshAll();
     }
@@ -288,10 +301,21 @@ public class GestionClienteView extends Div implements BeforeEnterObserver, cust
 	
 	@Override
 	public void refrescarGridClientes(List<Clientes> data) {
+		datos.clear();
 		datos.addAll(data);
 		Collection<Clientes> items = datos;
 		grid.setItems(items);
 		
+		
+	}
+	@Override
+	public void mostrarMesajeCreacion(boolean exito) {
+	String mensajeMostrar = "Cliente creado exitosamente!";
+	
+	if(!exito) {
+		mensajeMostrar = "Cliente no pudo ser creado :(!";
+	}
+	Notification.show(mensajeMostrar);
 		
 	}
 

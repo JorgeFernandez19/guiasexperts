@@ -154,9 +154,9 @@ public class MainLayout extends AppLayout {
     }
 
     private MenuItemInfo[] createMenuItems() {
-        return new MenuItemInfo[]{ //
-                new MenuItemInfo("Registro", LineAwesomeIcon.USER.create(), RegistroView.class), //
-
+        return new MenuItemInfo[]{ 
+             //new MenuItemInfo("Registro", LineAwesomeIcon.USER.create(), PaquetesHNView.class), //
+        		 new MenuItemInfo("Regitro", LineAwesomeIcon.ADDRESS_BOOK.create(), GestionClienteView.class),
                 new MenuItemInfo("Gestion Cliente", LineAwesomeIcon.ADDRESS_BOOK.create(), GestionClienteView.class), //
 
                 new MenuItemInfo("Paquetes HN", LineAwesomeIcon.PLANE_DEPARTURE_SOLID.create(), PaquetesHNView.class), //

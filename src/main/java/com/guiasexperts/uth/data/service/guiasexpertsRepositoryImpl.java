@@ -2,9 +2,12 @@ package com.guiasexperts.uth.data.service;
 
 import java.io.IOException;
 
+import com.guiasexperts.uth.data.entity.Clientes;
 import com.guiasexperts.uth.data.entity.ResponseCustomer;
 import com.guiasexperts.uth.data.entity.ResponsePaquetes;
+import com.guiasexperts.uth.data.entity.SamplePerson;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -65,4 +68,27 @@ public ResponsePaquetes getPaquetes () throws IOException {
 
 	}
 }
+public boolean CreateCustomer (Clientes nuevo) throws IOException {
+	
+	Call<ResponseBody> call = client.getDatabaseService().CrearClientes(nuevo);
+	Response<ResponseBody> response = call.execute(); //aqui donde se consulta a la URL DE LA BASE DE DATOS
+	
+		return response.isSuccessful();
+
+	
+	}
+	
+public boolean CreateCustomerSP (SamplePerson nuevo) throws IOException {
+	
+	Call<ResponseBody> call = client.getDatabaseService().CrearClientesSP(nuevo);
+	Response<ResponseBody> response = call.execute(); //aqui donde se consulta a la URL DE LA BASE DE DATOS
+	
+
+		return response.isSuccessful();
+
+	
+	}
+
 }
+
+

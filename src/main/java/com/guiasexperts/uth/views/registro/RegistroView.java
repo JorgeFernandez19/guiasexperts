@@ -1,23 +1,28 @@
 package com.guiasexperts.uth.views.registro;
 
 
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+
+
+import com.guiasexperts.uth.data.cotroller.SamplePersonInteractor;
 import com.guiasexperts.uth.data.entity.SamplePerson;
+
 import com.guiasexperts.uth.data.service.SamplePersonService;
 import com.guiasexperts.uth.views.MainLayout;
+import com.guiasexperts.uth.views.gestioncliente.GestionClienteView;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
@@ -33,17 +38,18 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 public class RegistroView extends Div {
 
-    private TextField firstName = new TextField("Nombre");
-    private TextField lastName = new TextField("Apellido");
-    private EmailField email = new EmailField("Correo Electronico");
-    private DatePicker dateOfBirth = new DatePicker("Fecha Nacimiento");
-    private PhoneNumberField phone = new PhoneNumberField("Telefono");
-    private TextField occupation = new TextField("Ocupacion");
+    private TextField nombre = new TextField("Nombre");
+    private TextField edad = new TextField("Edad");
+    private TextField telefono = new TextField("Telefono");
+    private TextField direccion = new TextField("Direccion");
 
     private Button cancel = new Button("Cancelar");
     private Button save = new Button("Guardar");
 
-    private Binder<SamplePerson> binder = new Binder<>(SamplePerson.class);
+//    private Binder<SamplePerson> binder = new Binder<>(SamplePerson.class);
+	private SamplePerson samplePerson;
+	   private  SamplePersonService SamplePersonService;
+	    private SamplePersonInteractor controlador;
 
     public RegistroView(SamplePersonService personService) {
         addClassName("registro-view");
@@ -52,29 +58,55 @@ public class RegistroView extends Div {
         add(createFormLayout());
         add(createButtonLayout());
 
-        binder.bindInstanceFields(this);
-        clearForm();
+//        binder.bindInstanceFields(this);
+//        clearForm();
 
-        cancel.addClickListener(e -> clearForm());
+//        cancel.addClickListener(e -> clearForm());
         save.addClickListener(e -> {
-            personService.update(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " details stored.");
-            clearForm();
-        });
+        	 try {
+
+                 if (this == null) {
+                     
+                     this.samplePerson = new SamplePerson();
+                     this.samplePerson.setNombre(nombre.getValue());
+                     this.samplePerson.setEdad(edad.getValue());
+                     this.samplePerson.setTelefono(telefono.getValue());
+                     this.samplePerson.setDireccion(direccion.getValue());
+                     
+                     
+                    this.controlador.crearNuevoClientes(samplePerson);
+                 }
+                 
+                 
+                // binder.writeBean(this.clientes);
+               //  clientesService.update(this.clientes);
+          
+//                 clearForm();
+//                 refreshGrid();
+                 Notification.show("Data updated");
+                 UI.getCurrent().navigate(GestionClienteView.class);
+             } catch (ObjectOptimisticLockingFailureException exception) {
+                 Notification n = Notification.show(  "Error updating the data. Somebody else has updated the record while you were making changes.");
+                 n.setPosition(Position.MIDDLE);
+                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
+               
+             }
+               });
+         
     }
 
-    private void clearForm() {
+  /*  private void clearForm() {
         binder.setBean(new SamplePerson());
     }
-
+*/
     private Component createTitle() {
         return new H3("Informacion Personal");
     }
 
     private Component createFormLayout() {
         FormLayout formLayout = new FormLayout();
-        email.setErrorMessage("Please enter a valid email address");
-        formLayout.add(firstName, lastName, dateOfBirth, phone, email, occupation);
+//        email.setErrorMessage("Please enter a valid email address");
+        formLayout.add(nombre,edad,telefono,direccion);
         return formLayout;
     }
 
@@ -86,47 +118,6 @@ public class RegistroView extends Div {
         buttonLayout.add(cancel);
         return buttonLayout;
     }
-
-    private static class PhoneNumberField extends CustomField<String> {
-        private ComboBox<String> countryCode = new ComboBox<>();
-        private TextField number = new TextField();
-
-        public PhoneNumberField(String label) {
-            setLabel(label);
-            countryCode.setWidth("120px");
-            countryCode.setPlaceholder("Pais");
-            countryCode.setAllowedCharPattern("[\\+\\d]");
-            countryCode.setItems("+354", "+91", "+62", "+98", "+964", "+353", "+44", "+972", "+39", "+225", "+504");
-            countryCode.addCustomValueSetListener(e -> countryCode.setValue(e.getDetail()));
-            number.setAllowedCharPattern("\\d");
-            HorizontalLayout layout = new HorizontalLayout(countryCode, number);
-            layout.setFlexGrow(1.0, number);
-            add(layout);
-        }
-
-        @Override
-        protected String generateModelValue() {
-            if (countryCode.getValue() != null && number.getValue() != null) {
-                String s = countryCode.getValue() + " " + number.getValue();
-                return s;
-            }
-            return "";
-        }
-
-        @Override
-        protected void setPresentationValue(String phoneNumber) {
-            String[] parts = phoneNumber != null ? phoneNumber.split(" ", 2) : new String[0];
-            if (parts.length == 1) {
-                countryCode.clear();
-                number.setValue(parts[0]);
-            } else if (parts.length == 2) {
-                countryCode.setValue(parts[0]);
-                number.setValue(parts[1]);
-            } else {
-                countryCode.clear();
-                number.clear();
-            }
-        }
-    }
+    
 
 }

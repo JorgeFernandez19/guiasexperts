@@ -40,17 +40,48 @@ public class CustomerInteractorImpl implements CustomerInteractor {
 
 
 
-
-	@Override
+/*@Override
 	public void createCustomer(Clientes nuevo) {
 		// TODO Auto-generated method stub
 		
 	}
+*/
 
 
 
 
+/*	@Override
+	public void consultarClientes() {
+		try {
+			ResponseCustomer respuesta = this.modelo.getCustomer();
+			this.vista.refrescarGridClientes(respuesta.getItems());
+				
+			
+
+		}catch (IOException e) {
+		e.printStackTrace();
+		
+		}
+	}
+
+
+*/
+
+@Override
+public void crearNuevoClientes(Clientes nuevo) {
+	try {
+		boolean respuesta = this.modelo.CreateCustomer(nuevo);
+		this.vista.mostrarMesajeCreacion(respuesta);
+			
+		
+
+	}catch (IOException e) {
+	e.printStackTrace();
+	}
 	
+}
+
+
 		
 	}
 
