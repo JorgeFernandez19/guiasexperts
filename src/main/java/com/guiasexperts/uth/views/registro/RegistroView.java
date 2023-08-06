@@ -1,10 +1,16 @@
 package com.guiasexperts.uth.views.registro;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 
 import com.guiasexperts.uth.data.cotroller.SamplePersonInteractor;
+import com.guiasexperts.uth.data.cotroller.SamplePersonInteractorImpl;
+import com.guiasexperts.uth.data.entity.Clientes;
 import com.guiasexperts.uth.data.entity.SamplePerson;
 
 import com.guiasexperts.uth.data.service.SamplePersonService;
@@ -24,7 +30,7 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
+
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -42,6 +48,7 @@ public class RegistroView extends Div {
     private TextField edad = new TextField("Edad");
     private TextField telefono = new TextField("Telefono");
     private TextField direccion = new TextField("Direccion");
+    private List<Clientes> datos;
 
     private Button cancel = new Button("Cancelar");
     private Button save = new Button("Guardar");
@@ -52,7 +59,10 @@ public class RegistroView extends Div {
 	    private SamplePersonInteractor controlador;
 
     public RegistroView(SamplePersonService personService) {
+    	 this.controlador = new SamplePersonInteractorImpl();
+         this.datos = new ArrayList<>();
         addClassName("registro-view");
+  
 
         add(createTitle());
         add(createFormLayout());
@@ -65,7 +75,7 @@ public class RegistroView extends Div {
         save.addClickListener(e -> {
         	 try {
 
-                 if (this == null) {
+        	     if (this.samplePerson == null) {
                      
                      this.samplePerson = new SamplePerson();
                      this.samplePerson.setNombre(nombre.getValue());
@@ -75,7 +85,7 @@ public class RegistroView extends Div {
                      
                      
                     this.controlador.crearNuevoClientes(samplePerson);
-                 }
+               }
                  
                  
                 // binder.writeBean(this.clientes);
@@ -119,5 +129,26 @@ public class RegistroView extends Div {
         return buttonLayout;
     }
     
+	
 
-}
+
+    
+    
+    public void mostrarMesajeCreacion(boolean exito) {
+	String mensajeMostrar = "Cliente creado exitosamente!";
+	
+	if(!exito) {
+		mensajeMostrar = "Cliente no pudo ser creado :(!";
+	}
+	Notification.show(mensajeMostrar);
+		
+	}
+
+	}
+
+	
+
+	
+	
+
+

@@ -36,6 +36,13 @@ public interface guiasexpertsRepository {
 		
 		@POST("/pls/apex/jorgefernandez_pv2_2023/guiasexperts/clientes/")
 		Call<ResponseBody> CrearClientes(@Body Clientes nuevo);
+		
+		@Headers({
+		    "Content-Type: application/json",
+		    "Accept-Charset:utf-8",
+		    "User-Agent: Retrofit-Sample-App"
+		})
+		
 	
 		@POST("/pls/apex/jorgefernandez_pv2_2023/guiasexperts/clientes/")
 		Call<ResponseBody> CrearClientesSP(@Body SamplePerson nuevo);

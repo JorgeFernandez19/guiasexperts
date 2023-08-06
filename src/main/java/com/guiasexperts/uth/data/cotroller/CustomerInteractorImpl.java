@@ -21,9 +21,6 @@ public class CustomerInteractorImpl implements CustomerInteractor {
 	
 	}
 
-	
-	
-	
 	@Override
 	public void consultarClientes() {
 		try {
