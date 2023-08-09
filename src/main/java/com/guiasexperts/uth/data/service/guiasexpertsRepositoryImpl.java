@@ -80,7 +80,7 @@ public boolean CreateCustomer (Clientes nuevo) throws IOException {
 	
 public boolean CreateCustomerSP (SamplePerson nuevo) throws IOException {
 	
-	Call<ResponseBody> call = client.getDatabaseService().CrearClientesSP(nuevo);
+	Call<ResponseBody> call = client.getDatabaseService().CrearClientes(nuevo);
 	Response<ResponseBody> response = call.execute(); //aqui donde se consulta a la URL DE LA BASE DE DATOS
 	
 

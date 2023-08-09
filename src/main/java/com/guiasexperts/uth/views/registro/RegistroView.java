@@ -30,7 +30,8 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -42,7 +43,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 @Uses(Icon.class)
 
-public class RegistroView extends Div {
+public class RegistroView extends Div implements BeforeEnterObserver,registroViewModel {
 
     private TextField nombre = new TextField("Nombre");
     private TextField edad = new TextField("Edad");
@@ -59,7 +60,7 @@ public class RegistroView extends Div {
 	    private SamplePersonInteractor controlador;
 
     public RegistroView(SamplePersonService personService) {
-    	 this.controlador = new SamplePersonInteractorImpl();
+    
          this.datos = new ArrayList<>();
         addClassName("registro-view");
   
@@ -130,10 +131,11 @@ public class RegistroView extends Div {
     }
     
 	
-
-
-    
-    
+	@Override
+	public void beforeEnter(BeforeEnterEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
     public void mostrarMesajeCreacion(boolean exito) {
 	String mensajeMostrar = "Cliente creado exitosamente!";
 	
@@ -144,7 +146,10 @@ public class RegistroView extends Div {
 		
 	}
 
+		
 	}
+
+	
 
 	
 

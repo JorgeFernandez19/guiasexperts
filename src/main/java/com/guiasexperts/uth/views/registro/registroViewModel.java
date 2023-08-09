@@ -7,7 +7,7 @@ import com.guiasexperts.uth.data.entity.SamplePerson;
 
 public interface registroViewModel {
 	
-	void refrescarGridClientes(List<SamplePerson> SamplePerson);
+
 	void mostrarMesajeCreacion(boolean exito );
 
 

@@ -13,12 +13,11 @@ public class SamplePersonInteractorImpl implements SamplePersonInteractor {
 	private registroViewModel vista;
 
 	
-//	public SamplePersonInteractorImpl (regitroViewModel vista) {
-//		super ();
-//		this.modelo = guiasexpertsRepositoryImpl.getInstance("https://apex.oracle.com", 600000L);
-//	    this.vista = vista;
-//	
-//	}
+public SamplePersonInteractorImpl (registroViewModel vista) {
+	super ();
+	this.modelo = guiasexpertsRepositoryImpl.getInstance("https://apex.oracle.com", 600000L);
+  this.vista = vista;
+	}
 
 
 @Override

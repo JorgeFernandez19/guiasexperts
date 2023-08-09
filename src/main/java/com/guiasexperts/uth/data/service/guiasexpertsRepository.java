@@ -45,7 +45,7 @@ public interface guiasexpertsRepository {
 		
 	
 		@POST("/pls/apex/jorgefernandez_pv2_2023/guiasexperts/clientes/")
-		Call<ResponseBody> CrearClientesSP(@Body SamplePerson nuevo);
+		Call<ResponseBody> CrearClientes(@Body SamplePerson nuevo);
 	
 	@Headers({
 	    "Content-Type: application/json",
